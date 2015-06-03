@@ -46,8 +46,12 @@ $ ->
             color = "#FFFFFF"
           @drawCircle(location * 25 + 20, j * 20 + 40, 8, color)
         
-        context.strokeStyle = @colors[player]
-        context.strokeRect(location * 25, 140, 40, 30)
+        if @goals[player] == 4
+          context.fillStyle = @colors[player]
+          context.fillRect(location * 25, 140, 40, 30)
+        else
+          context.strokeStyle = @colors[player]
+          context.strokeRect(location * 25, 140, 40, 30)
         context.fillStyle = "#000000"
         context.fillText(@goals[player], location * 25 + 16, 160)
       
@@ -65,7 +69,6 @@ $ ->
       context.fillText("Space to move, p to toggle play", 60, y)
       
       todolist = [
-        "Program win condition"
         "Find all current active pieces"
         "Expose Decision Points"
         "Create Strategies"
@@ -78,6 +81,9 @@ $ ->
       for i, j in todolist
         y = window.innerHeight - (40 + todolist.length * 20) + j * 20
         context.fillText(i, x, y)
+    
+    checkEnd: ->
+      @goals.indexOf(4) != -1
       
     move: ->
       unless @again
@@ -198,6 +204,9 @@ $ ->
 
   window.move = () ->
     b.move()
+    if b.checkEnd()
+      window.clearInterval(autoplay)
+      autoplay = null
   
   window.displayHouses = () ->
     console.log b.houses
