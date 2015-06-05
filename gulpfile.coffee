@@ -9,9 +9,18 @@ jasmine     = require 'gulp-jasmine'
 concat      = require 'gulp-concat'
 uglify      = require 'gulp-uglify'
 
+coffee_files = [
+  'die'
+  'board'
+  'player'
+  'view'
+  'main'
+].map (file) ->
+  "src/coffee/**/#{file}.coffee"
+
 sources =
   sass:   'src/sass/**/*.scss'
-  coffee: 'src/coffee/**/*.coffee'
+  coffee: coffee_files
   jspec:  'spec/**/*.coffee'
 
 destinations =
