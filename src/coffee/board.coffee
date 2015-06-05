@@ -33,3 +33,56 @@ $ ->
     
     deliverPiece: (player) ->
       @goals[player]++
+    
+    # Actual to Player-Biased Position
+    pbPosition: (player, location) ->
+      (location - @starts[player]) % 52
+    
+    # Player-Biased to Actual Position
+    acPosition: (player, location) ->
+      (location + @starts[player]) % 52
+    
+    playerPieces: (player) =>
+      pieces = []
+      
+      for piece, space in @track
+        if piece == player
+          pieces.push space
+      
+      pieces.map (space) =>
+        @pbPosition(player, space)
+    
+    advaceToken: (player, pSource, steps, inHouse) ->
+      pDestination = pSource + steps
+      source      = @acPosition(player, pSource)
+      destination = @acPosition(player, pDestination)
+      
+      # The houses aren't adjusted per player, so the player source is okay
+      if inHouse
+        if pDestination == 5
+          @deliverPiece(@id)
+          @houses[player][pSource] = null
+        else if pDestination < 5
+          unless @houses[player][pDestination]?
+            @houses[player][pSource] = null
+            @houses[player][destination] = @id
+      else if @track[source] == player
+        door = @doors[player]
+        
+        # If we can enter home
+        if source == door or (source < door and source + steps > door)
+          interiorSteps = steps - (door - source) - 1
+          
+          unless @houses[player][interiorSteps]?
+            @track[source] = null
+            @houses[player][interiorSteps] = player
+        
+        else
+          destination = (source + steps) % 52
+          
+          unless @track[destination == @id
+            if @track[destination]?
+              @returnPiece destination
+            
+            @track[source] = null
+            @track[destination] = @id
