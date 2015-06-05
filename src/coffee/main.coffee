@@ -19,11 +19,16 @@ $ ->
   window.addEventListener 'resize', resizeCanvas, false
   resizeCanvas()
 
-  window.move = () ->
+  window.move = ->
     b.move(view)
     if b.checkEnd()
       window.clearInterval(autoplay)
       autoplay = null
+  
+  window.restart = ->
+    b = new Board([p1, p2, p3, p4], d, context)
+    view.board = b
+    view.draw()
   
   window.displayHouses = () ->
     console.log b.houses
@@ -31,10 +36,12 @@ $ ->
   $(window).on 'keyup', (event) ->
     if event.which == 32
       window.move()
-    else if event.which == 80
+    else if event.which == 80 # p
       console.log('p pressed')
       unless autoplay?
         autoplay = window.setInterval(move, 20)
       else
         window.clearInterval(autoplay)
         autoplay = null
+    else if event.which == 82 # r
+      window.restart()

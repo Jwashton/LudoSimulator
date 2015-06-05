@@ -126,7 +126,7 @@ $ ->
       @context.fillText(roll, x, y)
       
       x += @space_height() + @space_padding_right
-      @context.fillText("Space to move, p to toggle play", x, y)
+      @context.fillText("Space to move, p to toggle play, r to restart", x, y)
     
     drawTodoList: ->
       todolist = [
