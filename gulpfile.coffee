@@ -14,6 +14,7 @@ coffee_files = [
   'board'
   'player'
   'view'
+  'circle_view'
   'main'
 ].map (file) ->
   "src/coffee/**/#{file}.coffee"
