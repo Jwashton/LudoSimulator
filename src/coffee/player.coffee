@@ -28,9 +28,9 @@ $ ->
         board.goAgain()
       else if @hasExposed(board)
         current = pieces[0]
-        board.advance(@id, current, num, false)
+        board.advanceToken(@id, current, num, false)
       else if @hasHoused(board)
         current = board.houses[@id].indexOf(@id)
-        board.advance(@id, current, num, true)
+        board.advanceToken(@id, current, num, true)
       else
         console.log "Do Nothing"

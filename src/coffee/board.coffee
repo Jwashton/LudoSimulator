@@ -52,21 +52,24 @@ $ ->
       pieces.map (space) =>
         @pbPosition(player, space)
     
-    advaceToken: (player, pSource, steps, inHouse) ->
+    advanceToken: (player, pSource, steps, inHouse) ->
       pDestination = pSource + steps
       source      = @acPosition(player, pSource)
       destination = @acPosition(player, pDestination)
       
+      console.log "Advancing from #{pSource} by #{steps}"
       # The houses aren't adjusted per player, so the player source is okay
       if inHouse
+        console.log "Moving in house!"
         if pDestination == 5
-          @deliverPiece(@id)
+          @deliverPiece(player)
           @houses[player][pSource] = null
         else if pDestination < 5
           unless @houses[player][pDestination]?
             @houses[player][pSource] = null
-            @houses[player][destination] = @id
+            @houses[player][pDestination] = player
       else if @track[source] == player
+        console.log "Piece ownership verified"
         door = @doors[player]
         
         # If we can enter home
@@ -78,11 +81,15 @@ $ ->
             @houses[player][interiorSteps] = player
         
         else
-          destination = (source + steps) % 52
+          console.log "Just a mundane move"
+          console.log "#{source} -> #{destination}"
           
-          unless @track[destination == @id
+          unless @track[destination] == player
+            console.log "Not stepping on own foot"
             if @track[destination]?
               @returnPiece destination
             
+            console.log "Actually moving now!"
             @track[source] = null
-            @track[destination] = @id
+            @track[destination] = player
+            console.log @track[destination]
