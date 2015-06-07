@@ -36,7 +36,7 @@ $ ->
     
     # Actual to Player-Biased Position
     pbPosition: (player, location) ->
-      (location - @starts[player]) % 52
+      ((location - @starts[player]) + 52) % 52
     
     # Player-Biased to Actual Position
     acPosition: (player, location) ->
@@ -49,8 +49,9 @@ $ ->
         if piece == player
           pieces.push space
       
-      pieces.map (space) =>
-        @pbPosition(player, space)
+      pieces.map((space) =>
+        @pbPosition(player, space)).sort (a, b) ->
+          a - b
     
     advanceToken: (player, pSource, steps, inHouse) ->
       pDestination = pSource + steps
@@ -60,7 +61,6 @@ $ ->
       console.log "Advancing from #{pSource} by #{steps}"
       # The houses aren't adjusted per player, so the player source is okay
       if inHouse
-        console.log "Moving in house!"
         if pDestination == 5
           @deliverPiece(player)
           @houses[player][pSource] = null
@@ -69,7 +69,6 @@ $ ->
             @houses[player][pSource] = null
             @houses[player][pDestination] = player
       else if @track[source] == player
-        console.log "Piece ownership verified"
         door = @doors[player]
         
         # If we can enter home
@@ -81,15 +80,9 @@ $ ->
             @houses[player][interiorSteps] = player
         
         else
-          console.log "Just a mundane move"
-          console.log "#{source} -> #{destination}"
-          
           unless @track[destination] == player
-            console.log "Not stepping on own foot"
             if @track[destination]?
               @returnPiece destination
             
-            console.log "Actually moving now!"
             @track[source] = null
             @track[destination] = player
-            console.log @track[destination]

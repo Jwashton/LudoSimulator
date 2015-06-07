@@ -131,8 +131,6 @@ $ ->
     drawTodoList: ->
       todolist = [
         "Fix goal and text spacing on the circle view"
-        "Expose a player-centric board to each player"
-        "Find all current active pieces"
         "Expose Decision Points"
         "Create Strategies"
         "Highlight last move (arrows maybe?)"

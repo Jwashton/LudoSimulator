@@ -22,6 +22,7 @@ $ ->
       num = board.die.roll()
       
       pieces = board.playerPieces(@id)
+      console.log pieces
       
       if num == 6
         @start(board)
