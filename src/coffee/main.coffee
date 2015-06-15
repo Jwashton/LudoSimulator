@@ -9,7 +9,6 @@ $ ->
   d = new Die(6)
   b = new Board([p1, p2, p3, p4], d, context)
   view = new CircleView(context, b)
-  autoplay = null
   
   resizeCanvas = ->
     canvas.width  = window.innerWidth
@@ -19,16 +18,24 @@ $ ->
   window.addEventListener 'resize', resizeCanvas, false
   resizeCanvas()
 
-  window.move = ->
-    b.move(view)
-    if b.checkEnd()
-      window.clearInterval(autoplay)
-      autoplay = null
-  
   window.restart = ->
     b = new Board([p1, p2, p3, p4], d, context)
     view.board = b
     view.draw()
+  
+  window.move = ->
+    b.move(view)
+    if b.checkEnd()
+      if autorestart
+        window.clearInterval(window.autoplay)
+        window.autoplay = null
+        
+        window.setTimeout((->
+          restart(); window.autoplay = window.setInterval(move, 20)
+        ), 1000)
+      else
+        window.clearInterval(window.autoplay)
+        window.autoplay = null
   
   window.displayHouses = () ->
     console.log b.houses
@@ -38,10 +45,13 @@ $ ->
       window.move()
     else if event.which == 80 # p
       console.log('p pressed')
-      unless autoplay?
-        autoplay = window.setInterval(move, 20)
+      unless window.autoplay?
+        window.autoplay = window.setInterval(move, 20)
       else
-        window.clearInterval(autoplay)
-        autoplay = null
+        window.clearInterval(window.autoplay)
+        window.autoplay = null
     else if event.which == 82 # r
       window.restart()
+    else if event.which == 65 # a
+      window.autorestart = !(window.autorestart)
+      view.draw()

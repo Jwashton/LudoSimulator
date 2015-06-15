@@ -20,6 +20,8 @@ $ ->
       
       @todolist_width = 300
       
+      @autorestart_width = 20
+      
       @colors =
         background: "#FFFFFF"
         space:      "#000000"
@@ -37,6 +39,19 @@ $ ->
       @context.beginPath()
       @context.arc(x, y, radius, 0, Math.PI * 2)
       @context.fill()
+    
+    drawCheckBox: (x, y, size, checked) ->
+      @context.strokeStyle = @colors.space
+      @context.strokeRect(x, y, size, size)
+      
+      if checked
+        @context.beginPath()
+        @context.moveTo(x + size / 4, y + size / 4)
+        @context.lineTo(x + size / 2, y + size / 2)
+        @context.lineTo(x + (5 * size) / 4, y - size / 4)
+        @context.lineTo(x + size / 2, y + (3 * size) / 4)
+        @context.lineTo(x + size / 4, y + size / 4)
+        @context.fill()
     
     clearScreen: ->
       @context.fillStyle = @colors.background
@@ -127,9 +142,17 @@ $ ->
       
       x += @space_height() + @space_padding_right
       @context.fillText("Space to move, p to toggle play, r to restart", x, y)
+      y -= @line_height + @space_radius
+      @context.fillText("a to toggle autorestart", x, y)
+      
+      x = @window_padding_left - @space_radius
+      y = window.innerHeight - @window_padding_bottom - @space_radius * 4
+      @drawCheckBox(x, y, @autorestart_width, window.autorestart)
+      
     
     drawTodoList: ->
       todolist = [
+        "Add player success statistics"
         "Expose Decision Points"
         "Create Strategies"
         "Highlight last move (arrows maybe?)"

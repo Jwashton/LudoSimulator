@@ -10,6 +10,7 @@ concat      = require 'gulp-concat'
 uglify      = require 'gulp-uglify'
 
 coffee_files = [
+  'settings'
   'die'
   'board'
   'player'
