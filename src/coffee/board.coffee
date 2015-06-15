@@ -73,9 +73,13 @@ $ ->
         if source == door or (source < door and source + steps > door)
           interiorSteps = steps - (door - source) - 1
           
-          unless @houses[player][interiorSteps]?
+          if interiorSteps == 6
+            @delivierPiece(player)
             @track[source] = null
-            @houses[player][interiorSteps] = player
+          else
+            unless @houses[player][interiorSteps]?
+              @track[source] = null
+              @houses[player][interiorSteps] = player
         
         else
           unless @track[destination] == player
