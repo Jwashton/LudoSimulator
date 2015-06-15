@@ -50,15 +50,13 @@ $ ->
           pieces.push space
       
       pieces.map((space) =>
-        @pbPosition(player, space)).sort (a, b) ->
-          a - b
+        @pbPosition(player, space)).sort((a, b) -> a - b)
     
     advanceToken: (player, pSource, steps, inHouse) ->
       pDestination = pSource + steps
       source      = @acPosition(player, pSource)
       destination = @acPosition(player, pDestination)
       
-      console.log "Advancing from #{pSource} by #{steps}"
       # The houses aren't adjusted per player, so the player source is okay
       if inHouse
         if pDestination == 5

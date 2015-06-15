@@ -10,8 +10,8 @@ $ ->
         x: window.innerWidth / 2
         y: window.innerHeight / 2
       
-      x = center.x + radius * Math.cos(2 * Math.PI * space / 52)
-      y = center.y + radius * Math.sin(2 * Math.PI * space / 52)
+      x = center.x + radius * Math.cos(2 * Math.PI * (space + 2) / 52)
+      y = center.y + radius * Math.sin(2 * Math.PI * (space + 2) / 52)
       {x: x, y: y}
       
     drawTrack: ->
@@ -50,15 +50,24 @@ $ ->
           
         radius = @track_radius - 7 * space_dist
         loc = @calcCircleLocation(location, radius)
+        box_loc =
+          x: loc.x - (@goal_width / 2)
+          y: loc.y - (@goal_height / 2)
         text_loc =
-          x: loc.x + @goal_width / 2 - @h_text_offset
-          y: loc.y + @goal_height / 2 - @h_text_offset
+          x: box_loc.x + @goal_width / 2 - @h_text_offset
+          y: box_loc.y + @goal_height / 2 + @v_text_offset
         
         if @board.goals[player] == 4
-          @context.fillStyle = @colors.players[player]
-          @context.fillRect(loc.x, loc.y, @goal_width, @goal_height)
+          style = 'fill'
         else
-          @context.strokeStyle = @colors.players[player]
-          @context.strokeRect(loc.x, loc.y, @goal_width, @goal_height)
+          style = 'stroke'
+        
+        # Create the boxes
+        @context[style + 'Style'] = @colors.players[player]
+        @context[style + 'Rect'](box_loc.x,
+                                 box_loc.y,
+                                 @goal_width,
+                                 @goal_height)
+        
         @context.fillStyle = @colors.text
         @context.fillText(@board.goals[player], text_loc.x, text_loc.y)

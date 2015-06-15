@@ -22,9 +22,8 @@ $ ->
       num = board.die.roll()
       
       pieces = board.playerPieces(@id)
-      console.log pieces
       
-      if num == 6
+      if num == 6 and @hasStart(board) and pieces.indexOf(0) == -1
         @start(board)
         board.goAgain()
       else if @hasExposed(board)
@@ -33,5 +32,3 @@ $ ->
       else if @hasHoused(board)
         current = board.houses[@id].indexOf(@id)
         board.advanceToken(@id, current, num, true)
-      else
-        console.log "Do Nothing"
