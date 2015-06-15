@@ -47,10 +47,11 @@ $ ->
           color = @colors.players[player]
           @drawCircle(loc.x, loc.y, @space_radius, color)
           
-          color = if occupied? then @colors.players[occupied] else @colors.space
-          @drawCircle(loc.x, loc.y, @token_radius(), color)
+          unless occupied?
+            @drawCircle(loc.x, loc.y, @token_radius(), @colors.space)
           
-        radius = @track_radius - (@board.houses[player].length + 1.5) * space_dist
+        radius = @track_radius -
+                 (@board.houses[player].length + 1.5) * space_dist
         loc = @calcCircleLocation(location, radius)
         box_loc =
           x: loc.x - (@goal_width / 2)
@@ -59,10 +60,7 @@ $ ->
           x: box_loc.x + @goal_width / 2 - @h_text_offset
           y: box_loc.y + @goal_height / 2 + @v_text_offset
         
-        if @board.goals[player] == 4
-          style = 'fill'
-        else
-          style = 'stroke'
+        style = if @board.goals[player] == 4 then 'fill' else 'stroke'
         
         # Create the boxes
         @context[style + 'Style'] = @colors.players[player]

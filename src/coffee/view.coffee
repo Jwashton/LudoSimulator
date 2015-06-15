@@ -24,7 +24,7 @@ $ ->
         background: "#FFFFFF"
         space:      "#000000"
         text:       "#000000"
-        players: ["#FF0000", "#00FF00", "#00AAFF", "#FFFF00"]
+        players: ["#FF0000", "#00FF00", "#00AAFF", "#FFEE00"]
       
     space_height: ->
       @space_radius * 2
