@@ -14,7 +14,7 @@ $ ->
       @goals    = [0, 0, 0, 0]
     
     checkEnd: ->
-      @goals.indexOf(4) != -1
+      @goals.indexOf(4)
       
     move: (view) ->
       unless @again

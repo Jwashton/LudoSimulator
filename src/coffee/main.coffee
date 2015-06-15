@@ -25,7 +25,10 @@ $ ->
   
   window.move = ->
     b.move(view)
-    if b.checkEnd()
+    if b.checkEnd() != -1
+      window.win_history[b.checkEnd()]++
+      view.draw()
+      
       if autorestart
         window.clearInterval(window.autoplay)
         window.autoplay = null

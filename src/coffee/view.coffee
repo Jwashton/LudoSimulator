@@ -152,7 +152,6 @@ $ ->
     
     drawTodoList: ->
       todolist = [
-        "Add player success statistics"
         "Expose Decision Points"
         "Create Strategies"
         "Highlight last move (arrows maybe?)"
@@ -168,6 +167,37 @@ $ ->
         y = window.innerHeight -
             (@window_padding_bottom + delta_row * @line_height)
         @context.fillText(item, x, y)
+    
+    drawStatistics: ->
+      x = @window_padding_left + @space_radius
+      base_y = window.innerHeight - @window_padding_bottom - @space_radius * 6
+      
+      max_wins = Math.max.apply(null, window.win_history)
+      
+      unless max_wins == 0
+        for player, number in @board.players
+          @context.fillStyle = @colors.players[number]
+          
+          height = (window.win_history[number] * 100) / max_wins
+         
+          x += @space_radius
+          y = base_y - height
+          
+          @context.fillRect(x, y, @space_radius, height)
+      
+      x = @window_padding_left + @space_radius * 2
+      @context.strokeStyle = "#AAAAAA"
+      @context.beginPath()
+      @context.moveTo(x, base_y - 100)
+      @context.lineTo(x + @space_radius * 4, base_y - 100)
+      @context.moveTo(x, base_y - 50)
+      @context.lineTo(x + @space_radius * 4, base_y - 50)
+      @context.stroke()
+      
+      @context.fillStyle = @colors.text
+      @context.fillText(max_wins, x + @space_radius * 4, base_y - 100)
+      @context.fillText(max_wins / 2, x + @space_radius * 4, base_y - 50)
+      
       
     draw: ->
       @clearScreen()
@@ -178,3 +208,4 @@ $ ->
       @drawHouses()
       @drawDie()
       @drawTodoList()
+      @drawStatistics()
