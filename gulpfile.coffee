@@ -14,6 +14,7 @@ coffee_files = [
   'die'
   'board'
   'player'
+  'strategy'
   'view'
   'circle_view'
   'main'

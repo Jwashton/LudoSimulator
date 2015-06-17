@@ -10,6 +10,9 @@ $ ->
       pieces = board.playerPieces(@id)
       num == 6 and @hasStart(board) and pieces.indexOf(0) == -1
     
+    can_play: ->
+      @rolls < 3
+    
     hasExposed: (board) ->
       board.track.indexOf(@id) != -1
     
@@ -23,48 +26,40 @@ $ ->
           board.returnPiece board.starts[@id]
         board.track[board.starts[@id]] = @id
     
-    move: (board) ->
+    get_number: (board) ->
       num = board.die.roll()
-      
       if num == 6
         @rolls++
       else
         @rolls = 0
+      num
+    
+    decide_move: (board, num, pieces) ->
+      # If we rolled a six, and we can start a new piece
+      if @canStart(board, num)
+        @start(board)
+      else if @hasExposed(board)
+        for piece in pieces
+          break if board.advanceToken(@id, piece, num, false)
+      else if @hasHoused(board)
+        current = board.houses[@id].indexOf(@id)
+        board.advanceToken(@id, current, num, true)
+    
+    move: (board) ->
+      num = @get_number(board)
+      pieces = board.playerPieces(@id)
       
-      unless @rolls == 3
-        pieces = board.playerPieces(@id)
-        
-        # If we rolled a six, and we can start a new piece
-        if @canStart(board, num)
-          @start(board)
-          board.goAgain()
-        else if @hasExposed(board)
-          for piece in pieces
-            if board.advanceToken(@id, piece, num, false)
-              break
-          board.goAgain() if num == 6
-        else if @hasHoused(board)
-          current = board.houses[@id].indexOf(@id)
-          board.advanceToken(@id, current, num, true)
+      @decide_move(board, num, pieces) if @can_play()
+      
+      board.goAgain() if num == 6
   
   class window.SingleMindedPlayer extends Player
-    move: (board) ->
-      num = board.die.roll()
-      if num == 6
-        @rolls++
-      else
-        @rolls = 0
-      
-      unless @rolls == 3
-        pieces = board.playerPieces(@id)
-        
-        if @hasExposed(board)
-          current = pieces[pieces.length - 1]
-          board.advanceToken(@id, current, num, false)
-          board.goAgain() if num == 6
-        else if @canStart(board, num)
-          @start(board)
-          board.goAgain()
-        else if @hasHoused(board)
-          current = board.houses[@id].indexOf(@id)
-          board.advanceToken(@id, current, num, true)
+    decide_move: (board, num, pieces) ->
+      if @hasExposed(board)
+        current = pieces[pieces.length - 1]
+        board.advanceToken(@id, current, num, false)
+      else if @canStart(board, num)
+        @start(board)
+      else if @hasHoused(board)
+        current = board.houses[@id].indexOf(@id)
+        board.advanceToken(@id, current, num, true)
