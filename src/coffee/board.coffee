@@ -6,10 +6,8 @@ $ ->
       @track = (null for i in [0..51])
       @doors = [50, 24, 11, 37]
       @starts = [0, 26, 13, 39]
-      @houses = [[null, null, null, null, null]
-                 [null, null, null, null, null]
-                 [null, null, null, null, null]
-                 [null, null, null, null, null]]
+      house = -> (null for i in [0..(window.house_size - 1)])
+      @houses = (house() for j in [0..(@players.length - 1)])
       @reserves = [4, 4, 4, 4]
       @goals    = [0, 0, 0, 0]
     
@@ -59,13 +57,12 @@ $ ->
       
       # The houses aren't adjusted per player, so the player source is okay
       if inHouse
-        if pDestination == 5
+        if pDestination == window.house_size
           @deliverPiece(player)
           @houses[player][pSource] = null
-        else if pDestination < 5
+        else if pDestination < window.house_size
           unless @houses[player][pDestination]?
             @houses[player][pSource] = null
-            console.log "#{player} -> #{pDestination} from in house"
             @houses[player][pDestination] = player
       else if @track[source] == player
         door = @doors[player]
@@ -74,13 +71,12 @@ $ ->
         if source == door or (source < door and source + steps > door)
           destination = steps - (door - source) - 1
           
-          if destination == 5
+          if destination == window.house_size
             @deliverPiece(player)
             @track[source] = null
           else
             unless @houses[player][destination]?
               @track[source] = null
-              console.log "#{player} -> #{destination} from out of house"
               @houses[player][destination] = player
         
         else
@@ -90,3 +86,8 @@ $ ->
             
             @track[source] = null
             @track[destination] = player
+          else
+            return false
+      else
+        return false
+      true

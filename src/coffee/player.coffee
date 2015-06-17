@@ -32,8 +32,9 @@ $ ->
         @start(board)
         board.goAgain()
       else if @hasExposed(board)
-        current = pieces[0]
-        board.advanceToken(@id, current, num, false)
+        for piece in pieces
+          if board.advanceToken(@id, piece, num, false)
+            break
         board.goAgain() if num == 6
       else if @hasHoused(board)
         current = board.houses[@id].indexOf(@id)
