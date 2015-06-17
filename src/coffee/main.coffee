@@ -44,17 +44,18 @@ $ ->
     console.log b.houses
   
   $(window).on 'keyup', (event) ->
-    if event.which == 32
-      window.move()
-    else if event.which == 80 # p
-      console.log('p pressed')
-      unless window.autoplay?
-        window.autoplay = window.setInterval(move, 20)
-      else
-        window.clearInterval(window.autoplay)
-        window.autoplay = null
-    else if event.which == 82 # r
-      window.restart()
-    else if event.which == 65 # a
-      window.autorestart = !(window.autorestart)
-      view.draw()
+    switch event.which
+      when 32
+        window.move()
+      when 80 # p
+        console.log('p pressed')
+        unless window.autoplay?
+          window.autoplay = window.setInterval(move, 20)
+        else
+          window.clearInterval(window.autoplay)
+          window.autoplay = null
+      when 82 # r
+        window.restart()
+      when 65 # a
+        window.autorestart = !(window.autorestart)
+        view.draw()

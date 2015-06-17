@@ -18,7 +18,7 @@ $ ->
       @line_height = 20
       @tab_width = 20
       
-      @todolist_width = 300
+      @todolist_width = 250
       
       @autorestart_width = 20
       
