@@ -65,21 +65,23 @@ $ ->
         else if pDestination < 5
           unless @houses[player][pDestination]?
             @houses[player][pSource] = null
+            console.log "#{player} -> #{pDestination} from in house"
             @houses[player][pDestination] = player
       else if @track[source] == player
         door = @doors[player]
         
         # If we can enter home
         if source == door or (source < door and source + steps > door)
-          interiorSteps = steps - (door - source) - 1
+          destination = steps - (door - source) - 1
           
-          if interiorSteps == 6
-            @delivierPiece(player)
+          if destination == 5
+            @deliverPiece(player)
             @track[source] = null
           else
-            unless @houses[player][interiorSteps]?
+            unless @houses[player][destination]?
               @track[source] = null
-              @houses[player][interiorSteps] = player
+              console.log "#{player} -> #{destination} from out of house"
+              @houses[player][destination] = player
         
         else
           unless @track[destination] == player

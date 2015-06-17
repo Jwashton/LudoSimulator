@@ -38,3 +38,19 @@ $ ->
       else if @hasHoused(board)
         current = board.houses[@id].indexOf(@id)
         board.advanceToken(@id, current, num, true)
+  
+  class window.SingleMindedPlayer extends Player
+    move: (board) ->
+      num = board.die.roll()
+      pieces = board.playerPieces(@id)
+      
+      if @hasExposed(board)
+        current = pieces[pieces.length - 1]
+        board.advanceToken(@id, current, num, false)
+        board.goAgain() if num == 6
+      else if @canStart(board, num)
+        @start(board)
+        board.goAgain()
+      else if @hasHoused(board)
+        current = board.houses[@id].indexOf(@id)
+        board.advanceToken(@id, current, num, true)
