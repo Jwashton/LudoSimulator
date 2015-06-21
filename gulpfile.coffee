@@ -8,6 +8,9 @@ coffee      = require 'gulp-coffee'
 jasmine     = require 'gulp-jasmine'
 concat      = require 'gulp-concat'
 uglify      = require 'gulp-uglify'
+merge       = require 'merge-stream'
+
+del         = require 'del'
 
 coffee_files = [
   'settings'
@@ -48,11 +51,18 @@ gulp.task 'src', ->
   .pipe(gulp.dest(destinations.js))
 
 gulp.task 'spec', ->
-  gulp.src(sources.jspec)
-  #.pipe(coffee({bare: true}).on('error', gutil.log))
-  .pipe(jasmine())
+  spec = gulp.src(sources.jspec)
+  src  = gulp.src(sources.coffee)
+  
+  merge(src, spec)
+    .pipe(coffee({bare: true}).on('error', gutil.log))
+    .pipe(gulp.dest(destinations.js))
+    #.pipe(jasmine())
 
 gulp.task 'watch', ->
   gulp.watch sources.sass, ['style']
   gulp.watch sources.coffee, ['lint', 'src']
   gulp.watch sources.jspec, ['spec']
+
+gulp.task 'clean', ->
+  del destinations.js
