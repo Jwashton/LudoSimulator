@@ -1,8 +1,11 @@
-window.autorestart = false
-window.autoplay = null
+autorestart = false
+autoplay = null
 
-window.win_history = [0, 0, 0, 0]
+win_history = [0, 0, 0, 0]
 
-window.house_size = 5
+house_size = 5
 
-window.starting_number = 6
+starting_number = 6
+
+settings =
+  track_length: 52

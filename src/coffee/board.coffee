@@ -1,9 +1,12 @@
 $ ->
   class window.Board
     constructor: (@players, @die, @context) ->
+      @main_track = (null for i in [0..51])
+      @starting_points = []
+      
       @currentPlayer = 3
       @again = false
-      @track = (null for i in [0..51])
+      @track = @main_track
       @doors = [50, 24, 11, 37]
       @starts = [0, 26, 13, 39]
       house = -> (null for i in [0..(window.house_size - 1)])

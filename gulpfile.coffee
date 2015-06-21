@@ -15,6 +15,7 @@ del         = require 'del'
 coffee_files = [
   'settings'
   'die'
+  'new_board'
   'board'
   'player'
   'strategy'
@@ -61,7 +62,7 @@ gulp.task 'spec', ->
 
 gulp.task 'watch', ->
   gulp.watch sources.sass, ['style']
-  gulp.watch sources.coffee, ['lint', 'src']
+  gulp.watch sources.coffee, ['lint', 'src', 'spec']
   gulp.watch sources.jspec, ['spec']
 
 gulp.task 'clean', ->
