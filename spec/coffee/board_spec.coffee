@@ -1,7 +1,7 @@
 describe "NewBoard", ->
   board = null
   
-  game = new Game(4)
+  game = new Game(2)
   
   it "throws an exception if given a game with fewer than 2 players", ->
     get_board = ( -> new NewBoard(new Game()) )
@@ -40,3 +40,14 @@ describe "NewBoard", ->
     it "has an appropriate number of tokens for each player in each zone", ->
       for tokens in board.staging_zones
         expect(tokens).toBe settings.starting_tokens
+  
+  describe ".safe_zones", ->
+    it "has a zone for each player", ->
+      expect(board.safe_zones.length).toBe game.players.length
+    
+    it "has an expected number of spaces in each safe zone", ->
+      expect(board.safe_zones[0].length).toBe settings.safe_zone_length
+    
+    it "starts with all spaces empty", ->
+      for space in board.safe_zones[0]
+        expect(space).toBeNull()
