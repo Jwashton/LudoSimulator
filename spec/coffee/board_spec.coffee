@@ -1,7 +1,11 @@
 describe "NewBoard", ->
   board = null
   
-  game = new Game()
+  game = new Game(2)
+  
+  it "throws an exception if given a game with fewer than 2 players", ->
+    get_board = ( -> new NewBoard(new Game()) )
+    expect(get_board).toThrow()
   
   beforeEach ->
     board = new NewBoard(game)
