@@ -18,11 +18,8 @@ describe "NewBoard", ->
       expect(board.main_track.length).toBe settings.track_length
     
     it "starts with all spaces empty", ->
-      has_pieces = false
       for space in board.main_track
-        has_pieces = true if space?
-      
-      expect(has_pieces).toBeFalsy()
+        expect(space).toBeNull()
   
   describe ".starting_points", ->
     it "has a point for each player", ->
