@@ -1,7 +1,7 @@
 describe "NewBoard", ->
   board = null
   
-  game = new Game(2)
+  game = new Game(4)
   
   it "throws an exception if given a game with fewer than 2 players", ->
     get_board = ( -> new NewBoard(new Game()) )
@@ -28,7 +28,7 @@ describe "NewBoard", ->
     it "has a point for each player", ->
       expect(board.starting_points.length).toBe game.players.length
     
-    it "does not have any overlapping elements", ->
-      unique = board.starting_points.filter (point, i, points) ->
-        i == points.indexOf point
-      expect(board.starting_points).toEqual unique
+    it "has all of it's points acceptably equidistant", ->
+      expect(validate_equidistant(
+        board.starting_points,
+        board.main_track.length)).toBeTruthy()
