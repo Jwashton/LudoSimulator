@@ -8,4 +8,5 @@ house_size = 5
 starting_number = 6
 
 settings =
+  starting_tokens: 4
   track_length: 52

@@ -32,3 +32,11 @@ describe "NewBoard", ->
       expect(validate_equidistant(
         board.starting_points,
         board.main_track.length)).toBeTruthy()
+  
+  describe ".staging_zones", ->
+    it "has a zone for each player", ->
+      expect(board.staging_zones.length).toBe game.players.length
+    
+    it "has an appropriate number of tokens for each player in each zone", ->
+      for tokens in board.staging_zones
+        expect(tokens).toBe settings.starting_tokens

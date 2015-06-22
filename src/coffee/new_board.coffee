@@ -5,6 +5,8 @@ class NewBoard
     
     distance = @main_track.length / @game.players.length
     @starting_points = (Math.round(i * distance) for i in @game.players)
+    
+    @staging_zones = (settings.starting_tokens for i in @game.players)
 
 class Game
   constructor: (num_players) ->
