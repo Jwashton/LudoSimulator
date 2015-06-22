@@ -1,8 +1,10 @@
 describe "NewBoard", ->
   board = null
   
+  game = new Game()
+  
   beforeEach ->
-    board = new NewBoard()
+    board = new NewBoard(game)
   
   it "can be constructed", ->
     expect(board).toBeDefined()
@@ -20,4 +22,9 @@ describe "NewBoard", ->
   
   describe ".starting_points", ->
     it "has a point for each player", ->
-      expect(board.starting_points.length).toBe board.players.length
+      expect(board.starting_points.length).toBe game.players.length
+    
+    it "does not have any overlapping elements", ->
+      unique = board.starting_points.filter (point, i, points) ->
+        i == points.indexOf point
+      expect(board.starting_points).toEqual unique
