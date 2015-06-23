@@ -48,3 +48,20 @@ describe "NewBoard", ->
     it "starts with all spaces empty", ->
       for space in board.safe_zones[0]
         expect(space).toBeNull()
+  
+  describe ".houses", ->
+    it "has a home for each player", ->
+      expect(board.houses.length).toBe game.players.length
+  
+  describe "#get_location", ->
+    it "defines zero as on the starting_point for the first player", ->
+      expect(board.get_location(0, 0)).toBe board.starting_points[0]
+    
+    it "defines zero as on the starting_point for all players", ->
+      expect(board.get_location(1, 0)).toBe board.starting_points[1]
+    
+    it "defines one as the point after the starting_point", ->
+      expect(board.get_location(1, 1)).toBe(board.starting_points[1] + 1)
+    
+    it "wraps around the board, not going beyond the track_length", ->
+      expect(board.get_location(1, 30)).toBeLessThan settings.track_length

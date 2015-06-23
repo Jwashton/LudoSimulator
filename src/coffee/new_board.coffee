@@ -11,6 +11,15 @@ class NewBoard
     
     generate_safe_zone = -> (null for [0...settings.safe_zone_length])
     @safe_zones = (generate_safe_zone() for i in @game.players)
+    
+    @houses = (0 for i in @game.players)
+  
+  # Takes a player-biased position, and calculates the actual position
+  get_location: (player, location) ->
+    (@starting_points[player] + location) % @main_track.length
+  # Takes a player-biased position, and returns the value at the actual position
+  # Takes a player-biased position and a value and sets the actual position to
+  #    the value
 
 class Game
   constructor: (num_players) ->
