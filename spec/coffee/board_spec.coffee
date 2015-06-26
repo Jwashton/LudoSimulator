@@ -74,5 +74,5 @@ describe "NewBoard", ->
       expect(board.get_location(1, 1)).toBe(board.starting_points[1] + 1)
     
     it "wraps around the board, not going beyond the track_length", ->
-      expect(board.get_location(1, settings.doorstep_distance)).
+      expect(board.get_location(1, settings.doorstep_distance - 2)).
         toBeLessThan settings.track_length
