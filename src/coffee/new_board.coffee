@@ -9,6 +9,11 @@ class NewBoard
     
     @staging_zones = (settings.starting_tokens for i in @game.players)
     
+    distance = (player_id) =>
+      destination = (@starting_points[player_id] + settings.doorstep_distance)
+      destination % settings.track_length
+    @doorsteps = (distance(i) for i in @game.players)
+    
     generate_safe_zone = -> (null for [0...settings.safe_zone_length])
     @safe_zones = (generate_safe_zone() for i in @game.players)
     
