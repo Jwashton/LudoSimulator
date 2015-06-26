@@ -152,9 +152,14 @@ $ ->
     
     drawTodoList: ->
       todolist = [
+        "Finish rebuilding/refactoring Board"
+        "Add interface for choosing strategies"
+        "Add playback speed control"
+        "Add mouse input callbacks"
         "Expose Decision Points"
         "Create Strategies"
         "Highlight last move (arrows maybe?)"
+        "Add visual polish"
       ]
       
       x = window.innerWidth - (@todolist_width + @window_padding_right)
