@@ -23,7 +23,7 @@ class NewBoard
       @houses.push          0
   
   verify_game_ready: ->
-    throw new Error('Too few players!') if @game.players.length < 2
+    throw new Error('Too few players!') if @game.players.length < 1
   
   construct_track: (length) ->
     (null for [0...length])
