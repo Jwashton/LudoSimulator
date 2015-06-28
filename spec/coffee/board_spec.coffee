@@ -3,7 +3,7 @@ describe "NewBoard", ->
   
   game = new Game(2)
   
-  it "throws an exception if given a game with fewer than 2 players", ->
+  it "throws an exception if given a game without any players", ->
     get_board = ( -> new NewBoard(new Game()) )
     expect(get_board).toThrow()
   
