@@ -8,17 +8,17 @@ class NewBoard
     
     @starting_points = []
     @staging_zones   = []
-    @doorsteps       = []
+    @doors           = []
     @safe_zones      = []
     @houses          = []
     
     for player in @game.players
       starting_point = Math.round player * player_buffer
-      distance = @loop_track_index(starting_point + settings.doorstep_distance)
+      distance = @loop_track_index(starting_point + settings.door_distance)
       
       @starting_points.push starting_point
       @staging_zones.push   settings.starting_tokens
-      @doorsteps.push       distance
+      @doors.push           distance
       @safe_zones.push      @construct_track(settings.safe_zone_length)
       @houses.push          0
   

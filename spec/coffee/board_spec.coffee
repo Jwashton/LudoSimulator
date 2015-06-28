@@ -38,15 +38,15 @@ describe "NewBoard", ->
       for tokens in board.staging_zones
         expect(tokens).toBe settings.starting_tokens
   
-  describe ".doorsteps", ->
-    it "has a doorstep for each player", ->
-      expect(board.doorsteps.length).toBe game.players.length
+  describe ".doors", ->
+    it "has a door for each player", ->
+      expect(board.doors.length).toBe game.players.length
     
-    it "does not have any overlapping doorsteps", ->
-      expect(unique_elements(board.doorsteps).length).toBe board.doorsteps.length
+    it "does not have any overlapping doors", ->
+      expect(unique_elements(board.doors).length).toBe board.doors.length
     
-    it "does not give any doorsteps beyond the track length", ->
-      expect(Math.max(board.doorsteps...)).toBeLessThan settings.track_length
+    it "does not give any doors beyond the track length", ->
+      expect(Math.max(board.doors...)).toBeLessThan settings.track_length
     
   describe ".safe_zones", ->
     it "has a zone for each player", ->
@@ -74,5 +74,5 @@ describe "NewBoard", ->
       expect(board.get_location(1, 1)).toBe(board.starting_points[1] + 1)
     
     it "wraps around the board, not going beyond the track_length", ->
-      expect(board.get_location(1, settings.doorstep_distance - 2)).
+      expect(board.get_location(1, settings.door_distance - 2)).
         toBeLessThan settings.track_length
