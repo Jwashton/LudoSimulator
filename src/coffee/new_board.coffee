@@ -13,8 +13,8 @@ class NewBoard
     @houses          = []
     
     for player in @game.players
-      starting_point = Math.round player * player_buffer
-      distance = @loop_track_index(starting_point + settings.door_distance)
+      starting_point = Math.round(player * player_buffer)
+      distance = @confine_track_index(starting_point + settings.door_distance)
       
       @starting_points.push starting_point
       @staging_zones.push   settings.starting_tokens
@@ -29,7 +29,7 @@ class NewBoard
     (null for [0...length])
   
   # Takes an int and confines it to the length of the main track
-  loop_track_index: (index) ->
+  confine_track_index: (index) ->
     index % @main_track.length
   
   # Takes a player-biased position, and calculates the actual position
