@@ -1,5 +1,6 @@
 describe "NewBoard", ->
   board = null
+  features = null
   
   game = new Game(2)
   
@@ -20,58 +21,63 @@ describe "NewBoard", ->
     it "starts with all spaces empty", ->
       for space in board.main_track
         expect(space).toBeNull()
+     
+  describe ".player_features", ->
+    beforeEach ->
+      features = board.player_features
+    
+    it "has a collection of features for each player", ->
+      expect(features.length).toBe game.players.length
+    
+    describe ".starting_point", ->
+      it "has all of it's points acceptably equidistant", ->
+        starting_points = features.map (player_feature) ->
+          player_feature.starting_point
+        
+        expect(validate_equidistant(
+          starting_points
+          board.main_track.length)).toBeTruthy()
   
-  describe ".starting_points", ->
-    it "has a point for each player", ->
-      expect(board.starting_points.length).toBe game.players.length
-    
-    it "has all of it's points acceptably equidistant", ->
-      expect(validate_equidistant(
-        board.starting_points,
-        board.main_track.length)).toBeTruthy()
+    describe ".staging_zone", ->
+      it "has an appropriate number of tokens for each player in each zone", ->
+        staging_zones = features.map (player_feature) ->
+          player_feature.staging_zone
+        
+        for tokens in staging_zones
+          expect(tokens).toBe settings.starting_tokens
   
-  describe ".staging_zones", ->
-    it "has a zone for each player", ->
-      expect(board.staging_zones.length).toBe game.players.length
+    describe ".door", ->
+      it "does not have any overlapping doors", ->
+        doors = features.map (player_feature) ->
+          player_feature.door
+        expect(unique_elements(doors).length).toBe doors.length
     
-    it "has an appropriate number of tokens for each player in each zone", ->
-      for tokens in board.staging_zones
-        expect(tokens).toBe settings.starting_tokens
-  
-  describe ".doors", ->
-    it "has a door for each player", ->
-      expect(board.doors.length).toBe game.players.length
+      it "does not give any doors beyond the track length", ->
+        doors = features.map (player_feature) ->
+          player_feature.door
+        expect(Math.max(doors...)).toBeLessThan settings.track_length
     
-    it "does not have any overlapping doors", ->
-      expect(unique_elements(board.doors).length).toBe board.doors.length
-    
-    it "does not give any doors beyond the track length", ->
-      expect(Math.max(board.doors...)).toBeLessThan settings.track_length
-    
-  describe ".safe_zones", ->
-    it "has a zone for each player", ->
-      expect(board.safe_zones.length).toBe game.players.length
-    
-    it "has an expected number of spaces in each safe zone", ->
-      expect(board.safe_zones[0].length).toBe settings.safe_zone_length
-    
-    it "starts with all spaces empty", ->
-      for space in board.safe_zones[0]
-        expect(space).toBeNull()
-  
-  describe ".houses", ->
-    it "has a home for each player", ->
-      expect(board.houses.length).toBe game.players.length
+    describe ".safe_zone", ->
+      it "has an expected number of spaces in each safe zone", ->
+        safe_zones = features.map (player_feature) ->
+          player_feature.safe_zone
+        expect(safe_zones[0].length).toBe settings.safe_zone_length
+      
+      it "starts with all spaces empty", ->
+        safe_zones = features.map (player_feature) ->
+          player_feature.safe_zone
+        for space in safe_zones[0]
+          expect(space).toBeNull()
   
   describe "#get_location", ->
     it "defines zero as on the starting_point for the first player", ->
-      expect(board.get_location(0, 0)).toBe board.starting_points[0]
+      expect(board.get_location(0, 0)).toBe features[0].starting_point
     
     it "defines zero as on the starting_point for all players", ->
-      expect(board.get_location(1, 0)).toBe board.starting_points[1]
+      expect(board.get_location(1, 0)).toBe features[1].starting_point
     
     it "defines one as the point after the starting_point", ->
-      expect(board.get_location(1, 1)).toBe(board.starting_points[1] + 1)
+      expect(board.get_location(1, 1)).toBe(features[1].starting_point + 1)
     
     it "wraps around the board, not going beyond the track_length", ->
       expect(board.get_location(1, settings.door_distance - 2)).

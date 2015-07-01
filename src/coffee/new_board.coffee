@@ -6,21 +6,18 @@ class NewBoard
     
     player_buffer = @main_track.length / @game.players.length
     
-    @starting_points = []
-    @staging_zones   = []
-    @doors           = []
-    @safe_zones      = []
-    @houses          = []
+    @player_features = []
     
     for player in @game.players
       starting_point = Math.round(player * player_buffer)
       distance = @confine_track_index(starting_point + settings.door_distance)
       
-      @starting_points.push starting_point
-      @staging_zones.push   settings.starting_tokens
-      @doors.push           distance
-      @safe_zones.push      @construct_track(settings.safe_zone_length)
-      @houses.push          0
+      @player_features.push
+        starting_point: starting_point
+        staging_zone:   settings.starting_tokens
+        door:           distance
+        safe_zone:      @construct_track(settings.safe_zone_length)
+        house:          0
   
   verify_game_ready: ->
     throw new Error('Too few players!') unless @game.players.length
@@ -34,7 +31,7 @@ class NewBoard
   
   # Takes a player-biased position, and calculates the actual position
   get_location: (player, location) ->
-    (@starting_points[player] + location) % @main_track.length
+    (@player_features[player].starting_point + location) % @main_track.length
   # Takes a player-biased position, and returns the value at the actual position
   # Takes a player-biased position and a value and sets the actual position to
   #    the value
