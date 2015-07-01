@@ -10,7 +10,7 @@ class NewBoard
     
     for player in @game.players
       starting_point = Math.round(player * player_buffer)
-      distance = @confine_track_index(starting_point + settings.door_distance)
+      distance = @confine_to_track(starting_point + settings.door_distance)
       
       @player_features.push
         starting_point: starting_point
@@ -26,12 +26,12 @@ class NewBoard
     (null for [0...length])
   
   # Takes an int and confines it to the length of the main track
-  confine_track_index: (index) ->
+  confine_to_track: (index) ->
     index % @main_track.length
   
   # Takes a player-biased position, and calculates the actual position
   get_location: (player, location) ->
-    (@player_features[player].starting_point + location) % @main_track.length
+    index: @confine_to_track(@player_features[player].starting_point + location)
   # Takes a player-biased position, and returns the value at the actual position
   # Takes a player-biased position and a value and sets the actual position to
   #    the value

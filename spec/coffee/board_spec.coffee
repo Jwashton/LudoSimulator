@@ -71,14 +71,14 @@ describe "NewBoard", ->
   
   describe "#get_location", ->
     it "defines zero as on the starting_point for the first player", ->
-      expect(board.get_location(0, 0)).toBe features[0].starting_point
+      expect(board.get_location(0, 0).index).toBe features[0].starting_point
     
     it "defines zero as on the starting_point for all players", ->
-      expect(board.get_location(1, 0)).toBe features[1].starting_point
+      expect(board.get_location(1, 0).index).toBe features[1].starting_point
     
     it "defines one as the point after the starting_point", ->
-      expect(board.get_location(1, 1)).toBe(features[1].starting_point + 1)
+      expect(board.get_location(1, 1).index).toBe(features[1].starting_point + 1)
     
     it "wraps around the board, not going beyond the track_length", ->
-      expect(board.get_location(1, settings.door_distance - 2)).
+      expect(board.get_location(1, settings.door_distance - 2).index).
         toBeLessThan settings.track_length
