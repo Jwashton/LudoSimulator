@@ -85,3 +85,18 @@ describe "NewBoard", ->
     it "wraps around the board, not going beyond the track_length", ->
       expect(board.get_location(1, settings.door_distance - 2).index).
         toBeLessThan settings.track_length
+  
+  describe "#view", ->
+    it "returns the value at a player-biased location", ->
+      expect(board.view(0, 0)).toBe null
+  
+  describe "#stage_piece", ->
+    it "moves a piece out of a player's staging zone", ->
+      initial_pieces = board.player_features[0].staging_zone
+      board.stage_piece(0)
+      final_pieces = board.player_features[0].staging_zone
+      expect(final_pieces).toBe(initial_pieces - 1)
+    
+    it "moves a piece into the board", ->
+      board.stage_piece(0)
+      expect(board.view(0, 0)).toBe 0

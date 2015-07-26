@@ -32,9 +32,19 @@ class NewBoard
   # Takes a player-biased position, and calculates the actual position
   get_location: (player, location) ->
     index: @confine_to_track(@player_features[player].starting_point + location)
+  
   # Takes a player-biased position, and returns the value at the actual position
+  view: (player, location) ->
+    @main_track[@get_location(player, location).index]
+  
   # Takes a player-biased position and a value and sets the actual position to
   #    the value
+  set: (player, location, value) ->
+    @main_track[@get_location(player, location).index] = value
+  
+  stage_piece: (player) ->
+    @set(player, 0, player)
+    @player_features[player].staging_zone -= 1
 
 class Game
   constructor: (num_players) ->
