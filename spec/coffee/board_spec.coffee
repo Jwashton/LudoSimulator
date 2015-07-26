@@ -1,15 +1,15 @@
-describe "NewBoard", ->
+describe "Board", ->
   board = null
   features = null
   
   game = new Game(2)
   
   it "throws an exception if given a game without any players", ->
-    get_board = ( -> new NewBoard(new Game()) )
+    get_board = ( -> new Board(new Game()) )
     expect(get_board).toThrow()
   
   beforeEach ->
-    board = new NewBoard(game)
+    board = new Board(game)
   
   it "can be constructed", ->
     expect(board).toBeDefined()

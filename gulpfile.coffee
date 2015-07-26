@@ -15,7 +15,6 @@ del         = require 'del'
 coffee_files = [
   'settings'
   'die'
-  'new_board'
   'game'
   'board'
   'player'
