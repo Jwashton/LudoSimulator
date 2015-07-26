@@ -77,7 +77,10 @@ describe "NewBoard", ->
       expect(board.get_location(1, 0).index).toBe features[1].starting_point
     
     it "defines one as the point after the starting_point", ->
-      expect(board.get_location(1, 1).index).toBe(features[1].starting_point + 1)
+      subject = board.get_location(1, 1).index
+      goal    = features[1].starting_point + 1
+      
+      expect(subject).toBe(goal)
     
     it "wraps around the board, not going beyond the track_length", ->
       expect(board.get_location(1, settings.door_distance - 2).index).
