@@ -16,6 +16,7 @@ coffee_files = [
   'settings'
   'die'
   'new_board'
+  'game'
   'board'
   'player'
   'strategy'

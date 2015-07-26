@@ -100,3 +100,25 @@ describe "NewBoard", ->
     it "moves a piece into the board", ->
       board.stage_piece(0)
       expect(board.view(0, 0)).toBe 0
+  
+  describe "#moves", ->
+    it "lists staging a piece as a move", ->
+      expect(board.moves(0, 1).length).toBe 1
+    
+    it "does not list a staging move as available for non-staging roll", ->
+      expect(board.moves(0, 1)[0].available).toBe false
+    
+    it "does list a staging move as availabe for a staging roll", ->
+      expect(board.moves(0, 6)[0].available).toBe true
+    
+    it "does not list a staging move as available if the space is blocked", ->
+      board.stage_piece(0)
+      expect(board.moves(0, 6)[0].available).toBe false
+    
+    it "does not list a staging move at all if the staging_zone is empty", ->
+      board.player_features[0].staging_zone = 0
+      expect(board.moves(0, 6).length).toBe 0
+    
+    it "allows you to stage a piece, if move is available", ->
+      board.moves(0, 6)[0].move()
+      expect(board.view(0, 0)).toBe 0

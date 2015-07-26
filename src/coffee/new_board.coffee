@@ -45,7 +45,22 @@ class NewBoard
   stage_piece: (player) ->
     @set(player, 0, player)
     @player_features[player].staging_zone -= 1
-
-class Game
-  constructor: (num_players) ->
-    @players = (i for i in [0...num_players])
+  
+  can_stage: (player, roll) ->
+    good_roll = roll == settings.starting_number
+    space_clear = @view(player, 0) != player
+    available_piece = @player_features[player].staging_zone > 0
+    
+    good_roll and space_clear and available_piece
+  
+  moves: (player, roll) =>
+    stage_piece = {}
+    stage_piece.available = @can_stage(player, roll)
+    stage_piece.move = => @stage_piece(player)
+    
+    moves = []
+    
+    if @player_features[player].staging_zone > 0
+      moves.push stage_piece
+    
+    moves
