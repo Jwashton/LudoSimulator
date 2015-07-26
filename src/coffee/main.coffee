@@ -1,4 +1,4 @@
-$ ->
+domready ->
   canvas = document.getElementById("board")
   context = canvas.getContext('2d')
     
@@ -43,7 +43,7 @@ $ ->
   window.displayHouses = () ->
     console.log b.houses
   
-  $(window).on 'keyup', (event) ->
+  window.addEventListener 'keyup', (event) ->
     switch event.which
       when 32
         window.move()
