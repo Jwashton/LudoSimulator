@@ -39,11 +39,11 @@ class NewBoard
   
   # Takes a player-biased position and a value and sets the actual position to
   #    the value
-  set: (player, location, value) ->
-    @main_track[@get_location(player, location).index] = value
+  set: (player, location) ->
+    @main_track[@get_location(player, location).index] = player
   
   stage_piece: (player) ->
-    @set(player, 0, player)
+    @set(player, 0)
     @player_features[player].staging_zone -= 1
   
   can_stage: (player, roll) ->
@@ -53,14 +53,39 @@ class NewBoard
     
     good_roll and space_clear and available_piece
   
+  can_move: (player, roll, location) ->
+    @view(player, location + roll) != player
+  
+  move_piece: (player, roll, location) ->
+    @main_track[@get_location(player, location).index] = null
+    @set(player, location + roll)
+  
+  make_move: (player, roll, location) ->
+    if @can_move(player, roll, location)
+      => @move_piece(player, roll, location)
+    else
+      -> false
+  
   moves: (player, roll) =>
-    stage_piece = {}
-    stage_piece.available = @can_stage(player, roll)
-    stage_piece.move = => @stage_piece(player)
-    
     moves = []
+    
+    stage_piece =
+      available: @can_stage(player, roll)
+      move: =>
+        if @can_stage(player, roll)
+          @stage_piece(player)
+        else
+          false
     
     if @player_features[player].staging_zone > 0
       moves.push stage_piece
+    
+    for location in [0...(settings.track_length)]
+      if @view(player, location) == player
+        new_move =
+          available: @can_move(player, roll, location)
+          move: @make_move(player, roll, location)
+        
+        moves.push new_move
     
     moves

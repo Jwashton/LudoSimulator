@@ -122,3 +122,27 @@ describe "NewBoard", ->
     it "allows you to stage a piece, if move is available", ->
       board.moves(0, 6)[0].move()
       expect(board.view(0, 0)).toBe 0
+    
+    it "does not allow you to stage a piece, if move is not available", ->
+      board.stage_piece(0)
+      expect(board.moves(0, 6)[0].move()).toBe false
+    
+    it "lists a move for each piece on the board", ->
+      board.set(0, 2)
+      board.set(0, 4)
+      expect(board.moves(0, 2).length).toBe 3
+    
+    it "does not list a move as available if it is blocked", ->
+      board.set(0, 2)
+      board.set(0, 4)
+      expect(board.moves(0, 2)[1].available).toBe false
+    
+    it "allows you to make a move, if available", ->
+      board.set(0, 2)
+      board.moves(0, 2)[1].move()
+      expect(board.view(0, 4)).toBe 0
+    
+    it "does not allow you to make a move, if it is not available", ->
+      board.set(0, 2)
+      board.set(0, 4)
+      expect(board.moves(0, 2)[1].move()).toBe(false)
