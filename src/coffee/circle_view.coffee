@@ -1,8 +1,8 @@
 class window.CircleView extends BoardView
-  constructor: (context, board) ->
+  constructor: (context, board, game) ->
     @track_radius = 270
     
-    super(context, board)
+    super(context, board, game)
   
   calcCircleLocation: (space, radius) ->
     center =
@@ -14,7 +14,7 @@ class window.CircleView extends BoardView
     {x: x, y: y}
     
   drawTrack: ->
-    for player, space in @board.track
+    for player, space in @board.main_track
       loc = @calcCircleLocation(space, @track_radius)
       
       @drawCircle(loc.x, loc.y, @space_radius, @colors.space)
@@ -24,7 +24,12 @@ class window.CircleView extends BoardView
         @drawCircle(loc.x, loc.y, @token_radius(), color)
   
   drawReserves: ->
-    for space, player in @board.starts
+    starts = @board.player_features.map (player) ->
+      player.starting_point
+    reserves = @board.player_features.map (player) ->
+      player.staging_zone
+    
+    for space, player in starts
       radius = @track_radius + @space_height() + @space_padding_bottom
       loc = @calcCircleLocation(space, radius)
       
@@ -34,13 +39,19 @@ class window.CircleView extends BoardView
       text_loc =
         x: loc.x - @space_radius / 2 + 1
         y: loc.y + @space_radius / 2
-      @context.fillText(@board.reserves[player], text_loc.x, text_loc.y)
+      @context.fillText(reserves[player], text_loc.x, text_loc.y)
   
   drawHouses: ->
     space_dist = @space_height() + @space_padding_bottom
-    for location, player in @board.doors
+    doors = @board.player_features.map (player) ->
+      player.door
+    houses = @board.player_features.map (player) ->
+      player.safe_zone
+    goals = @board.player_features.map (player) ->
+      player.house
+    for location, player in doors
       
-      for occupied, space in @board.houses[player]
+      for occupied, space in houses[player]
         radius = @track_radius - (space + 1) * space_dist
         loc = @calcCircleLocation(location, radius)
         color = @colors.players[player]
@@ -50,7 +61,7 @@ class window.CircleView extends BoardView
           @drawCircle(loc.x, loc.y, @token_radius(), @colors.space)
         
       radius = @track_radius -
-               (@board.houses[player].length + 1.5) * space_dist
+               (houses[player].length + 1.5) * space_dist
       loc = @calcCircleLocation(location, radius)
       box_loc =
         x: loc.x - (@goal_width / 2)
@@ -59,7 +70,7 @@ class window.CircleView extends BoardView
         x: box_loc.x + @goal_width / 2 - @h_text_offset
         y: box_loc.y + @goal_height / 2 + @v_text_offset
       
-      style = if @board.goals[player] == 4 then 'fill' else 'stroke'
+      style = if goals[player] == 4 then 'fill' else 'stroke'
       
       # Create the boxes
       @context[style + 'Style'] = @colors.players[player]
@@ -69,4 +80,4 @@ class window.CircleView extends BoardView
                                @goal_height)
       
       @context.fillStyle = @colors.text
-      @context.fillText(@board.goals[player], text_loc.x, text_loc.y)
+      @context.fillText(goals[player], text_loc.x, text_loc.y)

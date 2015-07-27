@@ -1,5 +1,5 @@
 class window.BoardView
-  constructor: (@context, @board) ->
+  constructor: (@context, @board, @game) ->
     @window_padding_top = 30
     @window_padding_right = 30
     @window_padding_bottom = 30
@@ -63,7 +63,7 @@ class window.BoardView
       x = space * space_width + @window_padding_left
       @drawCircle(x, @window_padding_top, @space_radius, @colors.space)
     
-    for player, space in @board.track
+    for player, space in @board.main_track
       if player?
         color = @colors.players[player]
         x = space * space_width + @window_padding_left
@@ -127,13 +127,13 @@ class window.BoardView
     
   drawDie: ->
     # Draw player color dot
-    currentColor = @colors.players[@board.currentPlayer]
+    current_color = @colors.players[@game.current_player]
     x = @window_padding_left
     y = window.innerHeight - @window_padding_bottom
-    @drawCircle(x, y, @space_radius, currentColor)
+    @drawCircle(x, y, @space_radius, current_color)
     
     # Draw roll number
-    roll = @board.die.history.splice(-1)
+    roll = @game.die.history.splice(-1)
     @context.fillStyle = @colors.text
     x = @window_padding_left - @h_text_offset
     y = window.innerHeight - @window_padding_bottom + @v_text_offset

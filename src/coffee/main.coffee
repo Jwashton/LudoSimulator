@@ -7,8 +7,9 @@ domready ->
   p3 = new SingleMindedPlayer(2, "Fred")
   p4 = new Player(3, "Fred")
   d = new Die(6)
-  b = new Board([p1, p2, p3, p4], d, context)
-  view = new CircleView(context, b)
+  g = new Game(4, d)
+  b = new Board(g) #[p1, p2, p3, p4], d, context)
+  view = new CircleView(context, b, g)
   
   resizeCanvas = ->
     canvas.width  = window.innerWidth
